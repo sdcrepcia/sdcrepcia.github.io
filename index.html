@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samuel Crepcia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1a2e44;
+      --teal:   #0d9488;
+      --teal-light: #99f6e4;
+      --muted:  #6b7280;
+      --border: #e5e7eb;
+      --bg:     #ffffff;
+      --bg-soft:#f9fafb;
+      --text:   #111827;
+      --font:   "DM Sans", sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px 120px;
+    }
+
+    /* ══════════════════════════════════════
+       STICKY MINI-HEADER
+    ══════════════════════════════════════ */
+    .mini-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+    .mini-header.visible { transform: translateY(0); }
+    .mini-header-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+    .mini-header-back {
+      font-size: 13px;
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .mini-header-back:hover { opacity: 0.65; }
+
+    /* ══════════════════════════════════════
+       SIDE NAV DOTS
+    ══════════════════════════════════════ */
+    .nav-dots {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 90;
+    }
+    .nav-dot-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-dot-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .nav-dots:hover .nav-dot-label,
+    .nav-dot-item:focus .nav-dot-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .nav-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background 0.25s, transform 0.25s;
+      flex-shrink: 0;
+    }
+    .nav-dot-item.active .nav-dot {
+      background: var(--teal);
+      transform: scale(1.5);
+    }
+    .nav-dot-item:hover .nav-dot {
+      background: var(--teal);
+      opacity: 0.6;
+    }
+    /* Hide on small screens */
+    @media (max-width: 820px) { .nav-dots { display: none; } }
+
+    /* ══════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════ */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .avatar-wrap {
+      flex-shrink: 0;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .avatar-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .avatar-initials {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: -0.03em;
+      pointer-events: none;
+    }
+
+    .header-text {}
+    .site-url {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+    .site-url a { color: inherit; text-decoration: none; }
+    .site-url a:hover { color: var(--teal); }
+
+    /* ── Teal accent under name ── */
+    .name {
+      font-size: clamp(26px, 5.5vw, 36px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 10px;
+      display: inline-block;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    .name::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 36px;
+      height: 2.5px;
+      background: var(--teal);
+      border-radius: 2px;
+      animation: accentGrow 0.7s ease 0.4s both;
+    }
+    @keyframes accentGrow {
+      from { width: 0; opacity: 0; }
+      to   { width: 36px; opacity: 1; }
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ══════════════════════════════════════
+       SECTIONS
+    ══════════════════════════════════════ */
+    section { margin-bottom: 52px; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .section-label.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── About ── */
+    .about-text { font-size: 15px; color: #374151; line-height: 1.8; max-width: 580px; }
+    .about-text p + p { margin-top: 14px; }
+
+    /* ══════════════════════════════════════
+       ROW ITEMS — with hover left border
+    ══════════════════════════════════════ */
+    .row-list { list-style: none; }
+
+    .row-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0 24px;
+      padding: 16px 0 16px 10px;
+      border-top: 1px solid var(--border);
+      border-left: 2px solid transparent;
+      margin-left: -12px;
+      padding-left: 10px;
+      border-radius: 0 6px 6px 0;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease,
+                  background 0.2s ease, border-left-color 0.2s ease;
+    }
+    .row-item.visible { opacity: 1; transform: translateY(0); }
+    .row-item:last-child { border-bottom: 1px solid var(--border); }
+    .row-item:hover {
+      background: var(--bg-soft);
+      border-left-color: var(--teal);
+    }
+
+    .row-date {
+      font-size: 12.5px;
+      color: var(--muted);
+      padding-top: 2px;
+      line-height: 1.5;
+    }
+
+    .row-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .row-sub { font-size: 13px; color: var(--muted); margin-bottom: 7px; }
+    .row-desc { font-size: 14px; color: #4b5563; line-height: 1.65; }
+
+    .row-bullets { list-style: none; margin-top: 6px; }
+    .row-bullets li {
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.65;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .row-bullets li::before { content: "–"; position: absolute; left: 0; color: var(--teal); }
+
+    /* ── Pulsing "Now" dot ── */
+    .now-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #059669;
+      letter-spacing: 0.04em;
+    }
+    .now-dot::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      animation: pulse-dot 2s ease infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+      50%       { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
+    }
+
+    /* Tags */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag {
+      font-size: 11px; font-weight: 500;
+      padding: 2px 9px; border-radius: 99px;
+      background: var(--bg-soft); color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .tag.teal { background: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
+    .tag.ai   { background: #1a2e44; color: #e0f2fe; border-color: #1a2e44; font-size: 10px; letter-spacing: 0.05em; }
+
+    /* Project links */
+    .row-links { display: flex; gap: 12px; margin-top: 10px; }
+    .row-link {
+      font-size: 13px; font-weight: 500;
+      color: var(--teal); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: opacity 0.2s;
+    }
+    .row-link:hover { opacity: 0.65; }
+    .row-link.muted { color: var(--muted); }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px; padding-top: 4px;
+    }
+    .skill-group-label { font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+    .skill-items { font-size: 13px; color: #4b5563; line-height: 2; }
+
+    /* ── Contact rows ── */
+    .contact-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0 24px;
+      padding: 12px 0 12px 10px;
+      border-top: 1px solid var(--border);
+      border-left: 2px solid transparent;
+      margin-left: -12px;
+      border-radius: 0 6px 6px 0;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease,
+                  background 0.2s ease, border-left-color 0.2s ease;
+    }
+    .contact-row.visible { opacity: 1; transform: translateY(0); }
+    .contact-row:last-child { border-bottom: 1px solid var(--border); }
+    .contact-row:hover { background: var(--bg-soft); border-left-color: var(--teal); }
+    .contact-label { font-size: 13px; color: var(--muted); padding-top: 2px; }
+    .contact-value a { font-size: 15px; font-weight: 500; color: var(--navy); text-decoration: none; }
+    .contact-value a:hover { color: var(--teal); }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 80px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-name { font-size: 13px; font-weight: 500; color: var(--navy); }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+
+    /* ── Header fade-in on load ── */
+    .header-fade { opacity: 0; transform: translateY(10px); animation: fadeUp 0.55s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .header-fade:nth-child(2) { animation-delay: 0.08s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .page { padding: 40px 20px 80px; }
+      .header { gap: 16px; }
+      .avatar-wrap { width: 56px; height: 56px; }
+      .row-item, .contact-row { grid-template-columns: 76px 1fr; gap: 0 14px; margin-left: -8px; padding-left: 6px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ══════════════════════════════════════
+       DEMO DRAWER / MODAL
+    ══════════════════════════════════════ */
+    .demo-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 36, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .demo-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .demo-drawer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 201;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -8px 48px rgba(15,23,36,0.18);
+      display: flex;
+      flex-direction: column;
+      height: 88vh;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .demo-drawer.open {
+      transform: translateY(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .drawer-drag-bar {
+      width: 36px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      position: absolute;
+      top: 10px; left: 50%;
+      transform: translateX(-50%);
+    }
+    .drawer-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .drawer-title-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+    .drawer-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .drawer-open-btn {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid var(--teal-light);
+      border-radius: 99px;
+      background: #f0fdfa;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .drawer-open-btn:hover { opacity: 0.7; }
+    .drawer-close-btn {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-soft);
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .drawer-close-btn:hover { background: var(--border); }
+
+    .drawer-iframe-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    .drawer-iframe-wrap iframe {
+      width: 100%; height: 100%;
+      border: none;
+      display: block;
+    }
+    .drawer-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--bg-soft);
+      font-size: 13px;
+      color: var(--muted);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .drawer-loading.hidden { opacity: 0; }
+    .loader-ring {
+      width: 32px; height: 32px;
+      border: 2.5px solid var(--border);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* No-demo placeholder state */
+    .drawer-no-demo {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .drawer-no-demo-icon { font-size: 40px; }
+    .drawer-no-demo h3 { font-size: 16px; font-weight: 600; color: var(--navy); }
+    .drawer-no-demo p { font-size: 14px; color: var(--muted); max-width: 320px; line-height: 1.6; }
+    .drawer-no-demo a {
+      font-size: 13px; font-weight: 500;
+      color: var(--teal); text-decoration: none;
+      margin-top: 4px;
+    }
+    .drawer-no-demo a:hover { opacity: 0.7; }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════
+       STICKY MINI-HEADER
+  ══════════════════════════════════════ -->
+  <div class="mini-header" id="miniHeader">
+    <span class="mini-header-name">Samuel Crepcia</span>
+    <a href="#top" class="mini-header-back">↑ Back to top</a>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SIDE NAV DOTS
+       Labels shown on hover of the whole dot column
+  ══════════════════════════════════════ -->
+  <nav class="nav-dots" aria-label="Page sections">
+    <a href="#about"      class="nav-dot-item" data-section="about">
+      <span class="nav-dot-label">About</span><span class="nav-dot"></span>
+    </a>
+    <a href="#experience" class="nav-dot-item" data-section="experience">
+      <span class="nav-dot-label">Experience</span><span class="nav-dot"></span>
+    </a>
+    <a href="#skills"     class="nav-dot-item" data-section="skills">
+      <span class="nav-dot-label">Skills</span><span class="nav-dot"></span>
+    </a>
+    <a href="#projects"   class="nav-dot-item" data-section="projects">
+      <span class="nav-dot-label">Projects</span><span class="nav-dot"></span>
+    </a>
+    <a href="#education"  class="nav-dot-item" data-section="education">
+      <span class="nav-dot-label">Education</span><span class="nav-dot"></span>
+    </a>
+    <a href="#contact"    class="nav-dot-item" data-section="contact">
+      <span class="nav-dot-label">Contact</span><span class="nav-dot"></span>
+    </a>
+  </nav>
+
+
+  <div class="page" id="top">
+
+    <!-- ══════════════════════════════════════
+         HEADER
+    ══════════════════════════════════════ -->
+    <header class="header header-fade">
+      <!-- SWAP: Save your headshot as photo.jpg in the same folder,
+           OR replace src="photo.jpg" with a direct image URL -->
+      <div class="avatar-wrap">
+        <img
+          src="photo.jpg"
+          alt="Samuel Crepcia"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <span class="avatar-initials" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">SC</span>
+      </div>
+
+      <div class="header-text">
+        <!-- SWAP: Replace with your real domain, or remove -->
+        <span class="site-url"><a href="#">samuelcrepcia.com</a></span>
+        <h1 class="name">Samuel Crepcia</h1>
+        <span class="tagline">Healthcare IT · Cleveland, OH</span>
+      </div>
+    </header>
+
+
+    <!-- ══════════════════════════════════════
+         ABOUT
+    ══════════════════════════════════════ -->
+    <section id="about">
+      <p class="section-label">About</p>
+      <div class="about-text">
+        <p>Healthcare implementations fail when the people building the solution don't understand how care is actually delivered. That's the gap I've spent 7+ years closing — first as a clinical informaticist embedded in a health system, then as an implementation consultant at Cerner, and across several health tech companies since.</p>
+        <p>Along the way I've worked across every level of a health system: sitting with nurses and physicians to redesign workflows at the bedside, partnering with operations managers to build scalable processes, and presenting findings to executives and administrators. My RN background lets me speak every one of those languages fluently.</p>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         WORK EXPERIENCE
+    ══════════════════════════════════════ -->
+    <section id="experience">
+      <p class="section-label">Work Experience</p>
+      <ul class="row-list">
+
+        <li class="row-item">
+          <span class="row-date">Jan 2026 — Now</span>
+          <div class="row-body">
+            <p class="row-title">
+              Client Success Manager · Datavant
+              <span class="now-dot">Now</span>
+            </p>
+            <p class="row-sub">Remote</p>
+            <ul class="row-bullets">
+              <li>Own project management and client relationships for risk adjustment initiatives, coordinating across data integrations, coding, engineering, and sales teams.</li>
+              <li>Prepare project status reports and results presentations for payer clients, tracking outcomes across the full project lifecycle and escalating issues to resolution.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="row-item">
+          <span class="row-date">Sep 2023 — Dec 2025</span>
+          <div class="row-body">
+            <p class="row-title">Sr. Associate, Operations Support · Cityblock Health</p>
+            <p class="row-sub">Remote</p>
+            <ul class="row-bullets">
+              <li>Led end-to-end operational and implementation initiatives across Ohio and Florida markets, driving measurable improvements in member outcomes and cost of care.</li>
+              <li>Served as a strategic partner to market leadership to design scalable workflows and standardize care delivery processes.</li>
+              <li>Defined and tracked value-creation metrics through user-friendly dashboards, validating ROI and presenting findings to senior leadership and frontline teams.</li>
+              <li>Project managed care model initiatives — including provider visits, risk adjustment, and acute care handoff strategies — ensuring alignment across stakeholders.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="row-item">
+          <span class="row-date">Oct 2021 — Sep 2023</span>
+          <div class="row-body">
+            <p class="row-title">Senior Clinical Implementation Consultant · Oracle Cerner</p>
+            <p class="row-sub">Remote</p>
+            <ul class="row-bullets">
+              <li>Led client-facing implementations in complex behavioral health and rehabilitation environments, guiding teams from workflow design through go-live and adoption.</li>
+              <li>Managed client relationships and served as the primary escalation point to resolve integration risks and ensure customer success.</li>
+              <li>Championed the organization's transition from waterfall to Agile delivery as an Agile methodology SME, improving delivery speed and team collaboration.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="row-item">
+          <span class="row-date">Oct 2019 — Sep 2021</span>
+          <div class="row-body">
+            <p class="row-title">Clinical Informaticist · Oracle Cerner</p>
+            <p class="row-sub">Middleburg Heights, OH</p>
+            <ul class="row-bullets">
+              <li>Embedded at Southwest General Hospital supporting Behavioral Health and Emergency Departments — designing and building workflows, PowerForms, and templates to reduce documentation redundancy.</li>
+              <li>Developed analytics dashboards in Lights On/Cerner Advance to inform workflow redesign and demonstrate measurable efficiency improvements.</li>
+              <li>Collaborated with multidisciplinary teams to optimize workflows in compliance with the 21st Century Cures Act.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="row-item">
+          <span class="row-date">Oct 2018 — Oct 2019</span>
+          <div class="row-body">
+            <p class="row-title">Registered Nurse, Perioperative · University Hospitals</p>
+            <p class="row-sub">Cleveland, OH</p>
+            <ul class="row-bullets">
+              <li>Delivered perioperative patient care within a multidisciplinary surgical team while ensuring accurate EMR documentation.</li>
+              <li>Contributed clinical insights as a member of the OR Informatics Committee, supporting EHR optimization initiatives.</li>
+            </ul>
+          </div>
+        </li>
+
+      </ul>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         SKILLS
+    ══════════════════════════════════════ -->
+    <section id="skills">
+      <p class="section-label">Skills</p>
+      <div class="skills-grid">
+        <div>
+          <p class="skill-group-label">Clinical</p>
+          <div class="skill-items">
+            Healthcare Workflow Design<br>
+            EMR Configuration (Cerner)<br>
+            Clinical Decision Support<br>
+            Value-Based Care<br>
+            Clinical Informatics<br>
+            Registered Nurse (RN)
+          </div>
+        </div>
+        <div>
+          <p class="skill-group-label">Technical</p>
+          <div class="skill-items">
+            Oracle Cerner / EHR<br>
+            SQL &amp; BigQuery<br>
+            Looker Studio<br>
+            Health Data Interoperability<br>
+            Data Analytics<br>
+            Agile Methodology
+          </div>
+        </div>
+        <div>
+          <p class="skill-group-label">Business</p>
+          <div class="skill-items">
+            Client Success<br>
+            Implementation Management<br>
+            Stakeholder Engagement<br>
+            Change Management<br>
+            Project Management<br>
+            Training &amp; Enablement
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         PROJECTS
+         SWAP instructions per card:
+           - data-demo-url: paste your Streamlit/HuggingFace/Replit URL,
+             or leave as "" to show the "coming soon" placeholder
+           - data-demo-title: label shown in the drawer header
+           - href on GitHub link: your real repo URL, or remove the link
+           - Tags: update to match your real stack
+           - Remove AI badge if not applicable
+    ══════════════════════════════════════ -->
+    <section id="projects">
+      <p class="section-label">Projects</p>
+      <ul class="row-list">
+
+        <!-- PROJECT 1 ─────────────────────── -->
+        <li class="row-item">
+          <span class="row-date">2025</span>
+          <div class="row-body">
+            <p class="row-title">EHR Workflow Audit Tool</p>
+            <p class="row-desc">A lightweight tool that maps clinical EHR workflows against best-practice templates to surface inefficiencies — useful for pre-implementation assessments and post-go-live optimization without a full consulting engagement.</p>
+            <div class="tag-list">
+              <span class="tag teal">Python</span>
+              <span class="tag teal">Streamlit</span>
+              <span class="tag teal">Pandas</span>
+              <span class="tag ai">✦ Vibe-coded</span>
+            </div>
+            <div class="row-links">
+              <!-- SWAP: your GitHub repo URL, or remove this link -->
+              <a class="row-link" href="https://github.com/yourusername/ehr-workflow-audit" target="_blank" rel="noopener">GitHub ↗</a>
+              <!-- SWAP: set data-demo-url to your Streamlit/HuggingFace URL -->
+              <button class="row-link demo-trigger"
+                data-demo-url=""
+                data-demo-title="EHR Workflow Audit Tool"
+                data-demo-ext="https://your-app.streamlit.app">
+                Live Demo ↗
+              </button>
+            </div>
+          </div>
+        </li>
+
+        <!-- PROJECT 2 ─────────────────────── -->
+        <li class="row-item">
+          <span class="row-date">2025</span>
+          <div class="row-body">
+            <p class="row-title">FHIR Data Explorer</p>
+            <p class="row-desc">An interactive dashboard connecting to a FHIR-compliant sandbox API that visualizes patient data resources — helping non-technical stakeholders explore interoperability concepts without writing a single query.</p>
+            <div class="tag-list">
+              <span class="tag teal">JavaScript</span>
+              <span class="tag teal">React</span>
+              <span class="tag teal">FHIR R4 API</span>
+              <span class="tag ai">✦ Built with AI</span>
+            </div>
+            <div class="row-links">
+              <!-- SWAP: your GitHub repo URL -->
+              <a class="row-link" href="https://github.com/yourusername/fhir-data-explorer" target="_blank" rel="noopener">GitHub ↗</a>
+              <!-- SWAP: set data-demo-url to your live URL -->
+              <button class="row-link demo-trigger"
+                data-demo-url=""
+                data-demo-title="FHIR Data Explorer"
+                data-demo-ext="https://your-app.streamlit.app">
+                Live Demo ↗
+              </button>
+            </div>
+          </div>
+        </li>
+
+        <!-- PROJECT 3 ─────────────────────── -->
+        <li class="row-item">
+          <span class="row-date">2024</span>
+          <div class="row-body">
+            <p class="row-title">Client Health Score Tracker</p>
+            <p class="row-desc">A CSM productivity tool that aggregates CRM exports and product usage logs into a composite client health score — giving account managers an at-a-glance view of renewal risk and expansion opportunity.</p>
+            <div class="tag-list">
+              <span class="tag teal">Python</span>
+              <span class="tag teal">Looker Studio</span>
+              <span class="tag teal">Google Sheets API</span>
+              <span class="tag ai">✦ Vibe-coded</span>
+            </div>
+            <div class="row-links">
+              <!-- SWAP: your GitHub repo URL -->
+              <a class="row-link" href="https://github.com/yourusername/client-health-tracker" target="_blank" rel="noopener">GitHub ↗</a>
+              <!-- SWAP: set data-demo-url to your live URL, or remove button -->
+              <button class="row-link demo-trigger"
+                data-demo-url=""
+                data-demo-title="Client Health Score Tracker"
+                data-demo-ext="https://your-app.streamlit.app">
+                Live Demo ↗
+              </button>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+      <!-- SWAP: Replace with your real GitHub profile URL -->
+      <a class="row-link" style="display:inline-flex; margin-top:16px; font-size:13px;" href="https://github.com/yourusername" target="_blank" rel="noopener">View all on GitHub ↗</a>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         DEMO DRAWER (shared, controlled by JS)
+    ══════════════════════════════════════ -->
+    <div class="demo-overlay" id="demoOverlay"></div>
+    <div class="demo-drawer" id="demoDrawer" role="dialog" aria-modal="true" aria-label="Live demo">
+      <div class="drawer-drag-bar"></div>
+      <div class="drawer-header">
+        <span class="drawer-title">
+          <span class="drawer-title-dot"></span>
+          <span id="drawerTitle">Live Demo</span>
+        </span>
+        <div class="drawer-actions">
+          <!-- Opens the demo in a new tab as fallback -->
+          <a class="drawer-open-btn" id="drawerExtLink" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+          <button class="drawer-close-btn" id="drawerClose" aria-label="Close demo">✕</button>
+        </div>
+      </div>
+
+      <!-- Shown when a URL is present -->
+      <div class="drawer-iframe-wrap" id="drawerIframeWrap" style="display:none;">
+        <div class="drawer-loading" id="drawerLoading">
+          <div class="loader-ring"></div>
+          <span>Loading demo…</span>
+        </div>
+        <iframe id="drawerIframe" title="Live demo" allowfullscreen></iframe>
+      </div>
+
+      <!-- Shown when no URL is set yet -->
+      <div class="drawer-no-demo" id="drawerNoDemo">
+        <div class="drawer-no-demo-icon">🚀</div>
+        <h3>Demo coming soon</h3>
+        <p>This project is being deployed. Check back shortly, or view the source code on GitHub.</p>
+        <!-- SWAP: update href to the project's GitHub repo -->
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         EDUCATION
+    ══════════════════════════════════════ -->
+    <section id="education">
+      <p class="section-label">Education</p>
+      <ul class="row-list">
+        <li class="row-item">
+          <span class="row-date">2018</span>
+          <div class="row-body">
+            <p class="row-title">B.S. Nursing</p>
+            <p class="row-sub">Baldwin Wallace University · Berea, OH</p>
+          </div>
+        </li>
+        <li class="row-item">
+          <span class="row-date">2013</span>
+          <div class="row-body">
+            <p class="row-title">B.S. Biology</p>
+            <p class="row-sub">Baldwin Wallace University · Berea, OH</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         LICENSES & CERTIFICATIONS
+    ══════════════════════════════════════ -->
+    <section id="certs">
+      <p class="section-label">Licenses &amp; Certifications</p>
+      <ul class="row-list">
+        <li class="row-item">
+          <span class="row-date">Active</span>
+          <div class="row-body">
+            <p class="row-title">Registered Nurse</p>
+            <p class="row-sub">Ohio RN 456799</p>
+          </div>
+        </li>
+        <li class="row-item">
+          <span class="row-date">Cerner</span>
+          <div class="row-body">
+            <p class="row-title">Cerner Build Certifications</p>
+            <p class="row-sub">FirstNet · MPages · ED LaunchPoint · ESH</p>
+          </div>
+        </li>
+        <li class="row-item">
+          <span class="row-date">Training</span>
+          <div class="row-body">
+            <p class="row-title">Additional Training</p>
+            <p class="row-sub">Agile Methodology · BigQuery · Looker Studio · SQL · Google Sheets</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         LANGUAGES
+    ══════════════════════════════════════ -->
+    <section id="languages">
+      <p class="section-label">Languages</p>
+      <ul class="row-list">
+        <li class="row-item">
+          <span class="row-date">Fluent</span>
+          <div class="row-body"><p class="row-title">Romanian</p></div>
+        </li>
+        <li class="row-item">
+          <span class="row-date">Native</span>
+          <div class="row-body"><p class="row-title">English</p></div>
+        </li>
+      </ul>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         CONTACT
+         SWAP: Replace links/handles with your real info.
+         Remove phone row if you prefer not to list it publicly.
+    ══════════════════════════════════════ -->
+    <section id="contact">
+      <p class="section-label">Contact</p>
+
+      <div class="contact-row">
+        <span class="contact-label">LinkedIn</span>
+        <div class="contact-value">
+          <a href="https://linkedin.com/in/samuel-crepcia" target="_blank" rel="noopener">samuel-crepcia</a>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <span class="contact-label">GitHub</span>
+        <div class="contact-value">
+          <!-- SWAP: Your real GitHub username -->
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener">yourusername</a>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <span class="contact-label">Email</span>
+        <div class="contact-value">
+          <a href="mailto:sdcrepcia@gmail.com">sdcrepcia@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <span class="contact-label">Phone</span>
+        <div class="contact-value">
+          <!-- SWAP: Remove this row if you prefer not to list your phone publicly -->
+          <a href="tel:4402632058">440-263-2058</a>
+        </div>
+      </div>
+
+      <!--
+      SWAP: Uncomment and add your resume PDF path when ready
+      <div class="contact-row">
+        <span class="contact-label">Resume</span>
+        <div class="contact-value">
+          <a href="Samuel_Crepcia_Resume_032026.pdf" target="_blank" rel="noopener">Download PDF ↗</a>
+        </div>
+      </div>
+      -->
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span class="footer-name">Samuel Crepcia</span>
+      <span class="footer-copy">Healthcare IT Professional · Cleveland, OH</span>
+    </footer>
+
+  </div><!-- /page -->
+
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════ -->
+  <script>
+    // ── Scroll-triggered fade-in for rows + section labels ──
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (entry.target.classList.contains('section-label')) {
+            entry.target.classList.add('visible');
+          } else {
+            const siblings = [...(entry.target.parentElement?.children || [])]
+              .filter(el => el.classList.contains('row-item') || el.classList.contains('contact-row'));
+            const idx = siblings.indexOf(entry.target);
+            entry.target.style.transitionDelay = `${idx * 0.055}s`;
+            entry.target.classList.add('visible');
+          }
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+    document.querySelectorAll('.row-item, .contact-row, .section-label')
+      .forEach(el => fadeObserver.observe(el));
+
+    // ── Sticky mini-header ──
+    const miniHeader = document.getElementById('miniHeader');
+    const headerEl = document.querySelector('.header');
+    const headerObserver = new IntersectionObserver(([entry]) => {
+      miniHeader.classList.toggle('visible', !entry.isIntersecting);
+    }, { threshold: 0 });
+    headerObserver.observe(headerEl);
+
+    // ── Active nav dots ──
+    const sections = ['about','experience','skills','projects','education','contact'];
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const dot = document.querySelector(`.nav-dot-item[data-section="${entry.target.id}"]`);
+        if (dot) dot.classList.toggle('active', entry.isIntersecting);
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+
+    // ── Demo Drawer ──
+    const overlay    = document.getElementById('demoOverlay');
+    const drawer     = document.getElementById('demoDrawer');
+    const drawerTitle   = document.getElementById('drawerTitle');
+    const drawerExtLink = document.getElementById('drawerExtLink');
+    const drawerIframeWrap = document.getElementById('drawerIframeWrap');
+    const drawerIframe     = document.getElementById('drawerIframe');
+    const drawerLoading    = document.getElementById('drawerLoading');
+    const drawerNoDemo     = document.getElementById('drawerNoDemo');
+    const drawerClose      = document.getElementById('drawerClose');
+
+    function openDrawer(url, title, extUrl) {
+      drawerTitle.textContent = title;
+      drawerExtLink.href = extUrl || url || '#';
+
+      if (url) {
+        // Has a live URL — show iframe
+        drawerNoDemo.style.display  = 'none';
+        drawerIframeWrap.style.display = 'block';
+        drawerLoading.classList.remove('hidden');
+        drawerIframe.src = '';
+        // slight delay so drawer animation starts first
+        setTimeout(() => { drawerIframe.src = url; }, 120);
+        drawerIframe.onload = () => drawerLoading.classList.add('hidden');
+      } else {
+        // No URL yet — show placeholder
+        drawerIframeWrap.style.display = 'none';
+        drawerNoDemo.style.display = 'flex';
+      }
+
+      overlay.classList.add('open');
+      drawer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      overlay.classList.remove('open');
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+      // clear iframe src after transition to stop the app running in background
+      setTimeout(() => { drawerIframe.src = ''; }, 400);
+    }
+
+    // Wire up all demo buttons
+    document.querySelectorAll('.demo-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const url   = btn.dataset.demoUrl   || '';
+        const title = btn.dataset.demoTitle || 'Live Demo';
+        const ext   = btn.dataset.demoExt   || url;
+        openDrawer(url, title, ext);
+      });
+    });
+
+    drawerClose.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    });
+  </script>
+
+</body>
+</html>
