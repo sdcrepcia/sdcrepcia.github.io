@@ -324,6 +324,7 @@
     }
     .tag.teal { background: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
     .tag.ai   { background: #1a2e44; color: #e0f2fe; border-color: #1a2e44; font-size: 10px; letter-spacing: 0.05em; }
+    .tag.wip  { background: #fffbeb; color: #92400e; border-color: #fcd34d; }
 
     /* Project links */
     .row-links { display: flex; gap: 12px; margin-top: 10px; }
@@ -758,25 +759,70 @@
 
         <!-- PROJECT 1 ─────────────────────── -->
         <li class="row-item">
-          <span class="row-date">2025</span>
+          <span class="row-date">2026</span>
           <div class="row-body">
-            <p class="row-title">Error Report Processor</p>
-            <p class="row-desc">Paste your weekly Aetna error report email data, review the parsed errors, and automatically create Jira tickets and log results to Google Sheets.</p>
+            <p class="row-title">NPI Lookup Tool</p>
+            <p class="row-desc">Google Apps Script for bulk NPI lookups against the NPPES registry — 10-pass fallback chain, credential-aware scoring, and auto-resume for large provider lists.</p>
             <div class="tag-list">
-              <span class="tag teal">Python</span>
-              <span class="tag teal">Streamlit</span>
-              <span class="tag ai">✦ Vibe-coded</span>
+              <span class="tag teal">Google Apps Script</span>
+              <span class="tag teal">NPPES API</span>
             </div>
             <div class="row-links">
-              <!-- SWAP: your GitHub repo URL, or remove this link -->
-              <a class="row-link" href="https://github.com/sdcrepcia/error-report-automation" target="_blank" rel="noopener">GitHub ↗</a>
-              <!-- SWAP: set data-demo-url to your Streamlit/HuggingFace URL -->
-              <button class="row-link demo-trigger"
-                data-demo-url=""
-                data-demo-title="Error Report Processor"
-                data-demo-ext="https://error-report-automation.streamlit.app/">
-                Live Demo ↗
-              </button>
+              <a class="row-link" href="https://github.com/sdcrepcia/npi-lookup-tool" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- PROJECT 2 ─────────────────────── -->
+        <li class="row-item">
+          <span class="row-date">2026</span>
+          <div class="row-body">
+            <p class="row-title">Cleveland Hospital Prices</p>
+            <p class="row-desc">Search and compare procedure pricing across 4 Cleveland-area hospitals — Cleveland Clinic, UH, MetroHealth, and Southwest General.</p>
+            <div class="tag-list">
+              <span class="tag teal">TypeScript</span>
+              <span class="tag teal">Next.js</span>
+              <span class="tag teal">SQLite</span>
+              <span class="tag wip">In Progress</span>
+            </div>
+            <div class="row-links">
+              <a class="row-link" href="https://github.com/sdcrepcia/cleveland-hospital-prices" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- PROJECT 3 ─────────────────────── -->
+        <li class="row-item">
+          <span class="row-date">2026</span>
+          <div class="row-body">
+            <p class="row-title">AskCMS</p>
+            <p class="row-desc">Ask questions about the 2027 CMS Advance Notice using AI — a RAG tool built over the official CMS PDF for risk adjustment research.</p>
+            <div class="tag-list">
+              <span class="tag teal">TypeScript</span>
+              <span class="tag teal">Next.js</span>
+              <span class="tag teal">Supabase</span>
+              <span class="tag ai">✦ AI</span>
+            </div>
+            <div class="row-links">
+              <a class="row-link" href="https://github.com/sdcrepcia/cms-qa" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- PROJECT 4 ─────────────────────── -->
+        <li class="row-item">
+          <span class="row-date">2026</span>
+          <div class="row-body">
+            <p class="row-title">Grocery Tracker</p>
+            <p class="row-desc">Pulls Heinen's grocery receipts from Gmail and tracks spending over time.</p>
+            <div class="tag-list">
+              <span class="tag teal">TypeScript</span>
+              <span class="tag teal">Next.js</span>
+              <span class="tag teal">Neon</span>
+              <span class="tag teal">Gmail API</span>
+            </div>
+            <div class="row-links">
+              <a class="row-link" href="https://github.com/sdcrepcia/grocery-tracker" target="_blank" rel="noopener">GitHub ↗</a>
             </div>
           </div>
         </li>
@@ -819,7 +865,7 @@
         <h3>Demo coming soon</h3>
         <p>This project is being deployed. Check back shortly, or view the source code on GitHub.</p>
         <!-- SWAP: update href to the project's GitHub repo -->
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener">View on GitHub ↗</a>
+        <a href="https://github.com/sdcrepcia" target="_blank" rel="noopener">View on GitHub ↗</a>
       </div>
     </div>
 
